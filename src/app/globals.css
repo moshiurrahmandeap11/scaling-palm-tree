@@ -1,26 +1,92 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b1020;
+  --brand: #7c3aed;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-slate-50 text-slate-800;
+}
+
+/* Gradient text helper */
+.text-gradient {
+  @apply bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent;
+}
+
+/* Reusable card surface */
+.card-surface {
+  @apply rounded-2xl border border-slate-200 bg-white shadow-sm;
+}
+
+/* Buttons */
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60;
+}
+.btn-primary {
+  @apply btn bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md hover:opacity-95;
+}
+.btn-ghost {
+  @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-100;
+}
+.btn-danger {
+  @apply btn bg-rose-600 text-white hover:bg-rose-700;
+}
+
+/* Inputs */
+.input {
+  @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-200;
+}
+.label {
+  @apply mb-1.5 block text-sm font-medium text-slate-700;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fadeUp 0.7s ease-out both;
+}
+
+@keyframes floatUp {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: floatUp 4s ease-in-out infinite;
+}
+
+/* Custom scrollbar for sidebar */
+.scroll-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-slate-300;
+}
+
+/* Swiper pagination color override */
+.swiper-pagination-bullet-active {
+  @apply bg-violet-600 !important;
 }
