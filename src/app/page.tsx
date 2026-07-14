@@ -209,7 +209,7 @@ export default function HomePage() {
           {testimonials.map((t, i) => (
             <SwiperSlide key={i}>
               <div className="card-surface h-full p-6">
-                <p className="text-slate-600">“{t.quote}”</p>
+                <p className="text-slate-600">&ldquo;{t.quote}&rdquo;</p>
                 <div className="mt-4 flex items-center gap-3">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={t.photo} alt={t.name} className="h-11 w-11 rounded-full object-cover" />
@@ -229,7 +229,7 @@ export default function HomePage() {
         <div className="rounded-3xl border border-slate-200 bg-slate-900 p-10 text-center text-white">
           <h2 className="text-3xl font-extrabold">Ready to make an impact?</h2>
           <p className="mt-2 text-slate-300">
-            Join {SITE_NAME} today as a supporter or creator — it's free to start.
+            Join {SITE_NAME} today as a supporter or creator — it&apos;s free to start.
           </p>
           <Link href="/register" className="btn-primary mt-6">
             Create Your Account

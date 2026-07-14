@@ -1,10 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ICampaign } from "@/lib/types";
 
-function timeLeft(deadline: string): string {
-  const diff = new Date(deadline).getTime() - Date.now();
+function timeLeft(deadline: string, now: number): string {
+  const diff = new Date(deadline).getTime() - now;
   if (diff <= 0) return "Ended";
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   if (days > 30) return `${Math.floor(days / 30)} mo left`;
@@ -14,6 +15,14 @@ function timeLeft(deadline: string): string {
 }
 
 export default function CampaignCard({ campaign }: { campaign: ICampaign }) {
+  const [now, setNow] = useState(0);
+
+  useEffect(() => {
+    setNow(Date.now());
+    const id = setInterval(() => setNow(Date.now()), 60000);
+    return () => clearInterval(id);
+  }, []);
+
   const pct = Math.min(
     100,
     Math.round((campaign.amountRaised / campaign.fundingGoal) * 100)
@@ -61,7 +70,7 @@ export default function CampaignCard({ campaign }: { campaign: ICampaign }) {
           <span className="rounded-full bg-slate-100 px-2 py-1 font-medium text-slate-600">
             {pct}% funded
           </span>
-          <span className="text-slate-500">{timeLeft(campaign.deadline)}</span>
+          <span className="text-slate-500">{timeLeft(campaign.deadline, now)}</span>
         </div>
       </div>
     </Link>

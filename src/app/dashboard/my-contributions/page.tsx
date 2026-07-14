@@ -19,29 +19,31 @@ export default function MyContributions() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    api
-      .get<{
-        contributions: IContribution[];
-        pagination: { page: number; totalPages: number };
-      }>(`/contributions/my?page=${page}&limit=5`)
-      .then((r) => {
-        setItems(r.contributions);
-        setTotalPages(r.pagination.totalPages);
-      })
-      .catch(() => toast.error("Failed to load contributions"))
-      .finally(() => setLoading(false));
+    const doLoad = () => {
+      api
+        .get<{
+          contributions: IContribution[];
+          pagination: { page: number; totalPages: number };
+        }>(`/contributions/my?page=${page}&limit=5`)
+        .then((r) => {
+          setItems(r.contributions);
+          setTotalPages(r.pagination.totalPages);
+        })
+        .catch(() => toast.error("Failed to load contributions"))
+        .finally(() => setLoading(false));
+    };
+    doLoad();
   }, [page]);
 
   return (
     <div>
       <h1 className="text-2xl font-extrabold text-slate-800">My Contributions</h1>
-      <p className="mt-1 text-slate-500">All the campaigns you've backed, with status.</p>
+      <p className="mt-1 text-slate-500">All the campaigns you&apos;ve backed, with status.</p>
 
       {loading ? (
         <p className="mt-8 text-slate-400">Loading...</p>
       ) : items.length === 0 ? (
-        <p className="mt-8 text-slate-400">You haven't made any contributions yet.</p>
+        <p className="mt-8 text-slate-400">You haven&apos;t made any contributions yet.</p>
       ) : (
         <div className="mt-6 overflow-x-auto card-surface">
           <table className="w-full text-sm">

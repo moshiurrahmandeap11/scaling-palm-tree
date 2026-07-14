@@ -21,6 +21,11 @@ export default function CampaignDetailPage() {
   const [submitting, setSubmitting] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
   const [reportReason, setReportReason] = useState("");
+  const [now, setNow] = useState(0);
+
+  useEffect(() => {
+    setNow(Date.now());
+  }, []);
 
   useEffect(() => {
     api
@@ -81,7 +86,7 @@ export default function CampaignDetailPage() {
     return <main className="mx-auto max-w-4xl px-4 py-16 text-slate-400">Campaign not found.</main>;
 
   const pct = Math.min(100, Math.round((campaign.amountRaised / campaign.fundingGoal) * 100));
-  const ended = new Date(campaign.deadline).getTime() < Date.now();
+  const ended = new Date(campaign.deadline).getTime() < now;
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">

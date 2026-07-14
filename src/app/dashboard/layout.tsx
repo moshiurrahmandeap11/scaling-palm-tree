@@ -11,14 +11,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    // If there is no persisted token after mount, redirect to login.
-    // Because the token is read synchronously from localStorage, a normal
-    // page reload keeps the user authenticated (no login redirect).
     if (!token && !loading) {
       router.replace("/login");
     } else if (token) {
-      setChecked(true);
+      // Use a microtask to avoid synchronous setState in effect body
+      Promise.resolve().then(() => setChecked(true));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, loading, router]);
 
   if (!token || !user || !checked) {

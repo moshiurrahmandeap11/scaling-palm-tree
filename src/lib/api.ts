@@ -48,7 +48,7 @@ export async function apiFetch<T = unknown>(
 
   if (rawResponse) return res as unknown as T;
 
-  let data: any = null;
+  let data: unknown = null;
   const text = await res.text();
   if (text) {
     try {
@@ -58,9 +58,9 @@ export async function apiFetch<T = unknown>(
     }
   }
 
-  if (!res.ok || data?.success === false) {
+  if (!res.ok || (data as Record<string, unknown>)?.success === false) {
     const message =
-      data?.message || `Request failed with status ${res.status}`;
+      String((data as Record<string, unknown>)?.message || `Request failed with status ${res.status}`);
     throw new ApiError(message, res.status);
   }
 

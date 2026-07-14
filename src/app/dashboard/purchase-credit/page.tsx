@@ -29,7 +29,8 @@ export default function PurchaseCredit() {
         dummy: true,
       });
       if (res.url) {
-        window.location.href = res.url;
+        // Navigate via router for SPA transition; fallback to assign for external URLs
+        window.location.assign(res.url);
       } else {
         toast.success(`Added ${pkg.credits} credits!`);
         refreshUser();

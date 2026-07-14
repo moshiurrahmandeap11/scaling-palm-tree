@@ -5,8 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { DASHBOARD_NAV, SITE_NAME, DEV_REPO_URL } from "@/lib/constants";
 import NotificationBell from "./NotificationBell";
+import type { ReactElement } from "react";
 
-const ICONS: Record<string, JSX.Element> = {
+const ICONS: Record<string, ReactElement> = {
   home: <path d="M3 11l9-8 9 8M5 10v10h14V10" />,
   compass: <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM16 12l-4-2-2 4 4 2 2-4z" />,
   list: <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />,

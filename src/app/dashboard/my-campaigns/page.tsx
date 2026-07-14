@@ -2,14 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { ICampaign } from "@/lib/types";
 import { toast } from "react-hot-toast";
 import Modal from "@/components/Modal";
 
 export default function MyCampaigns() {
-  const router = useRouter();
   const [items, setItems] = useState<ICampaign[]>([]);
   const [loading, setLoading] = useState(true);
   const [edit, setEdit] = useState<ICampaign | null>(null);
@@ -58,7 +56,7 @@ export default function MyCampaigns() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-slate-800">My Campaigns</h1>
-          <p className="mt-1 text-slate-500">Manage the campaigns you've launched.</p>
+          <p className="mt-1 text-slate-500">Manage the campaigns you&apos;ve launched.</p>
         </div>
         <Link href="/dashboard/add-campaign" className="btn-primary">
           + New Campaign
@@ -68,7 +66,7 @@ export default function MyCampaigns() {
       {loading ? (
         <p className="mt-8 text-slate-400">Loading...</p>
       ) : items.length === 0 ? (
-        <p className="mt-8 text-slate-400">You haven't created any campaigns yet.</p>
+        <p className="mt-8 text-slate-400">You haven&apos;t created any campaigns yet.</p>
       ) : (
         <div className="mt-6 overflow-x-auto card-surface">
           <table className="w-full text-sm">

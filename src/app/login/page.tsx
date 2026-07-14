@@ -68,10 +68,10 @@ export default function LoginPage() {
         </form>
 
         <button
-          onClick={() => toast("OpenAI sign-in is configured via the server's OpenAI endpoint.")}
+          onClick={() => toast("Google sign-in is configured via the server&apos;s Google endpoint.")}
           className="btn-ghost mt-3 w-full"
         >
-          Continue with OpenAI
+          Continue with Google
         </button>
 
         <p className="mt-6 text-center text-sm text-slate-500">

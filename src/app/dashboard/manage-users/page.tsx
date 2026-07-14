@@ -16,7 +16,10 @@ export default function ManageUsers() {
       .catch(() => toast.error("Failed to load users"))
       .finally(() => setLoading(false));
   };
-  useEffect(load, []);
+
+  useEffect(() => {
+    load();
+  }, []);
 
   const changeRole = async (id: string, role: UserRole) => {
     try {

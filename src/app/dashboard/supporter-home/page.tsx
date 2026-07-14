@@ -31,8 +31,8 @@ export default function SupporterHome() {
 
   return (
     <div>
-      <h1 className="text-2xl font-extrabold text-slate-800">Welcome, {user?.name}!</h1>
-      <p className="mt-1 text-slate-500">Here's a snapshot of your support activity.</p>
+      <h1 className="text-2xl font-extrabold text-slate-800">Welcome, {user?.name || "Guest"}!</h1>
+      <p className="mt-1 text-slate-500">Here&apos;s a snapshot of your support activity.</p>
 
       <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-3">
         {cards.map((c) => (
@@ -46,7 +46,7 @@ export default function SupporterHome() {
       <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Link href="/dashboard/approved-contributions" className="card-surface p-6 transition hover:shadow-md">
           <h3 className="font-semibold text-slate-800">Approved Contributions</h3>
-          <p className="mt-1 text-sm text-slate-500">See the campaigns you've successfully backed.</p>
+          <p className="mt-1 text-sm text-slate-500">See the campaigns you&apos;ve successfully backed.</p>
         </Link>
         <Link href="/dashboard/purchase-credit" className="card-surface p-6 transition hover:shadow-md">
           <h3 className="font-semibold text-slate-800">Purchase Credits</h3>

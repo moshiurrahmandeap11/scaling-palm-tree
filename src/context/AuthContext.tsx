@@ -87,10 +87,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // On mount, if we have a token but no user, fetch the profile.
   useEffect(() => {
-    if (token && !user) {
-      setLoading(true);
-      refreshUser().finally(() => setLoading(false));
-    }
+    const doRefresh = async () => {
+      if (token && !user) {
+        setLoading(true);
+        await refreshUser();
+        setLoading(false);
+      }
+    };
+    doRefresh();
   }, [token, user, refreshUser]);
 
   return (

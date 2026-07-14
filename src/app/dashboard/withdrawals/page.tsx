@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { useAuth } from "@/context/AuthContext";
 import { IWithdrawal, PaymentSystem } from "@/lib/types";
 import { CREDITS_PER_DOLLAR_WITHDRAWAL, MIN_WITHDRAWAL_CREDITS } from "@/lib/constants";
 import { toast } from "react-hot-toast";
@@ -10,7 +9,6 @@ import { toast } from "react-hot-toast";
 const SYSTEMS: PaymentSystem[] = ["Stripe", "Bkash", "Rocket", "Nagad", "Other"];
 
 export default function Withdrawals() {
-  const { refreshUser } = useAuth();
   const [info, setInfo] = useState<{ totalRaised: number; withdrawalAmount: number; eligible: boolean } | null>(null);
   const [history, setHistory] = useState<IWithdrawal[]>([]);
   const [form, setForm] = useState({
@@ -21,7 +19,7 @@ export default function Withdrawals() {
   const [loading, setLoading] = useState(false);
 
   const load = () => {
-    api.get<{ info: any }>("/withdrawals/info").then((r) => setInfo(r.info));
+    api.get<{ info: { totalRaised: number; withdrawalAmount: number; eligible: boolean } }>("/withdrawals/info").then((r) => setInfo(r.info));
     api.get<{ withdrawals: IWithdrawal[] }>("/withdrawals/my").then((r) => setHistory(r.withdrawals));
   };
   useEffect(load, []);

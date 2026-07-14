@@ -13,19 +13,17 @@ export default function NotificationBell() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const load = async () => {
-    if (!token) return;
-    try {
-      const res = await api.get<{ notifications: INotification[] }>("/notifications/");
-      setItems(res.notifications);
-    } catch {
-      /* ignore */
-    }
-  };
-
   useEffect(() => {
+    const load = async () => {
+      if (!token) return;
+      try {
+        const res = await api.get<{ notifications: INotification[] }>("/notifications/");
+        setItems(res.notifications);
+      } catch {
+        /* ignore */
+      }
+    };
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   // Close popup when clicking outside (per spec: click anywhere hides it)
