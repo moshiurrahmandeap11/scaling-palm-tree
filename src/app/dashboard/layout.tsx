@@ -17,7 +17,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       // Use a microtask to avoid synchronous setState in effect body
       Promise.resolve().then(() => setChecked(true));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, loading, router]);
 
   if (!token || !user || !checked) {

@@ -9,7 +9,13 @@ import { toast } from "react-hot-toast";
 const SYSTEMS: PaymentSystem[] = ["Stripe", "Bkash", "Rocket", "Nagad", "Other"];
 
 export default function Withdrawals() {
-  const [info, setInfo] = useState<{ totalRaised: number; withdrawalAmount: number; eligible: boolean } | null>(null);
+  const [info, setInfo] = useState<{
+    totalRaised: number;
+    pendingCredits: number;
+    availableRaised: number;
+    withdrawalAmount: number;
+    eligible: boolean;
+  } | null>(null);
   const [history, setHistory] = useState<IWithdrawal[]>([]);
   const [form, setForm] = useState({
     withdrawalCredit: "",
@@ -19,7 +25,13 @@ export default function Withdrawals() {
   const [loading, setLoading] = useState(false);
 
   const load = () => {
-    api.get<{ info: { totalRaised: number; withdrawalAmount: number; eligible: boolean } }>("/withdrawals/info").then((r) => setInfo(r.info));
+    api.get<{ info: {
+      totalRaised: number;
+      pendingCredits: number;
+      availableRaised: number;
+      withdrawalAmount: number;
+      eligible: boolean;
+    } }>("/withdrawals/info").then((r) => setInfo(r.info));
     api.get<{ withdrawals: IWithdrawal[] }>("/withdrawals/my").then((r) => setHistory(r.withdrawals));
   };
   useEffect(load, []);
@@ -59,6 +71,9 @@ export default function Withdrawals() {
             Raised credits: <span className="font-bold text-slate-800">{info?.totalRaised ?? 0}</span>
           </p>
           <p className="text-sm text-slate-500">
+            Available after pending requests: <span className="font-bold text-slate-800">{info?.availableRaised ?? 0}</span>
+          </p>
+          <p className="text-sm text-slate-500">
             Withdrawal amount: <span className="font-bold text-slate-800">${info?.withdrawalAmount?.toFixed(2) ?? "0.00"}</span>
           </p>
           <p className="mt-2 text-xs text-slate-400">20 credits = $1. Minimum withdrawal: {MIN_WITHDRAWAL_CREDITS} credits ($10).</p>
@@ -79,7 +94,7 @@ export default function Withdrawals() {
                 <label className="label">Credits To Withdraw</label>
                 <input
                   type="number"
-                  max={info?.totalRaised}
+                  max={info?.availableRaised}
                   min={1}
                   required
                   className="input"

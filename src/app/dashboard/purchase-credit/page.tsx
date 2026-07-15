@@ -21,12 +21,8 @@ export default function PurchaseCredit() {
   const buy = async (pkg: CreditPackage) => {
     setBusy(pkg.credits);
     try {
-      // Use the dummy fallback so credits are added immediately in dev
-      // (no Stripe webhook required). Pass dummy:true.
       const res = await api.post<{ url?: string }>("/payments/create-intent", {
         credits: pkg.credits,
-        amount: pkg.amount,
-        dummy: true,
       });
       if (res.url) {
         // Navigate via router for SPA transition; fallback to assign for external URLs

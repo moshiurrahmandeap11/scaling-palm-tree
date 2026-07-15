@@ -9,6 +9,7 @@ interface Stats {
   totalSupporters: number;
   totalCreators: number;
   totalCredits: number;
+  totalPayments: number;
 }
 
 export default function AdminHome() {
@@ -30,6 +31,7 @@ export default function AdminHome() {
     { label: "Supporters", value: stats?.totalSupporters ?? 0 },
     { label: "Creators", value: stats?.totalCreators ?? 0 },
     { label: "Total Credits", value: stats?.totalCredits ?? 0 },
+    { label: "Payments Processed", value: stats?.totalPayments ?? 0 },
   ];
 
   return (
@@ -37,7 +39,7 @@ export default function AdminHome() {
       <h1 className="text-2xl font-extrabold text-slate-800">Admin Dashboard</h1>
       <p className="mt-1 text-slate-500">Platform overview and quick stats.</p>
 
-      <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-3">
+      <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map((c) => (
           <div key={c.label} className="card-surface p-6">
             <p className="text-sm text-slate-500">{c.label}</p>
