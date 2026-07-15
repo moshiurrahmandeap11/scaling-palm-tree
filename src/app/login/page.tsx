@@ -16,6 +16,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const fillDemo = (role: "supporter" | "admin") => {
+    if (role === "admin") {
+      setEmail(process.env.NEXT_PUBLIC_DEMO_ADMIN_EMAIL || "admin@crowdfund.com");
+      setPassword(process.env.NEXT_PUBLIC_DEMO_ADMIN_PASSWORD || "Admin@12345");
+    } else {
+      setEmail(process.env.NEXT_PUBLIC_DEMO_USER_EMAIL || "supporter@crowdfund.com");
+      setPassword(process.env.NEXT_PUBLIC_DEMO_USER_PASSWORD || "Supporter@12345");
+    }
+    toast.success(`${role === "admin" ? "Admin" : "Supporter"} demo credentials filled.`);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -69,6 +80,22 @@ export default function LoginPage() {
         </form>
 
         <GoogleSignIn />
+
+        <div className="mt-4">
+          <div className="flex items-center gap-3 text-xs text-slate-400">
+            <span className="h-px flex-1 bg-slate-200" />
+            Demo access
+            <span className="h-px flex-1 bg-slate-200" />
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <button type="button" onClick={() => fillDemo("supporter")} className="btn-ghost px-3 py-2 text-xs">
+              Demo Supporter
+            </button>
+            <button type="button" onClick={() => fillDemo("admin")} className="btn-ghost px-3 py-2 text-xs">
+              Demo Admin
+            </button>
+          </div>
+        </div>
 
         <p className="mt-6 text-center text-sm text-slate-500">
           New here?{" "}

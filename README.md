@@ -4,13 +4,15 @@ FundHorizon is a responsive MERN crowdfunding platform where supporters fund app
 
 ## Submission information
 
-- **Admin username:** configured with `ADMIN_EMAIL` on the API server
-- **Admin password:** configured with `ADMIN_PASSWORD` on the API server
-- **Live site URL:** add the Vercel production URL here after deployment
+- **Demo user email:** `supporter@crowdfund.com`
+- **Demo user password:** `Supporter@12345`
+- **Admin email:** `admin@crowdfund.com`
+- **Admin password:** `Admin@12345`
+- **Live site URL:** deployment URL must be added after the Vercel project is connected
 - **Client repository:** https://github.com/moshiurrahmandeap11/scaling-palm-tree
 - **Server repository:** https://github.com/moshiurrahmandeap11/special-octo-potato
 
-> Keep the real admin password in the deployment environment. If reviewers need a demo password, add a dedicated non-production credential before submission.
+> These are dedicated assessment credentials. Do not reuse them for a production administrator.
 
 ## Features
 
@@ -19,6 +21,11 @@ FundHorizon is a responsive MERN crowdfunding platform where supporters fund app
 - Google Identity Services sign-in with server-side ID-token verification.
 - Persistent JWT authentication that survives private-route reloads.
 - Animated hero slider, top-funded campaigns, testimonials, categories, impact stats, and how-it-works content.
+- MongoDB-backed platform impact statistics with no fabricated landing-page totals.
+- Recharts visualizations on supporter, creator, and administrator dashboards.
+- Four-column campaign listings with descriptions, explicit detail actions, and skeleton loaders.
+- Search, multi-field filtering, sorting, and server-side pagination on Explore Campaigns.
+- Public About, Contact/Support, and Privacy/Terms pages with working navigation.
 - Responsive navbar, footer, dashboard sidebar, mobile menu, tables, cards, and forms.
 - Campaign creation with imgBB upload, admin approval, creator editing, deletion, and supporter refunds.
 - Campaign discovery with category filtering, text search, sorting, details, contributions, and fraud reporting.
