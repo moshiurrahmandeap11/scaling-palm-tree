@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { toast } from "react-hot-toast";
 import { IUser } from "@/lib/types";
+import GoogleSignIn from "@/components/GoogleSignIn";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -67,12 +68,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <button
-          onClick={() => toast("Google sign-in is configured via the server&apos;s Google endpoint.")}
-          className="btn-ghost mt-3 w-full"
-        >
-          Continue with Google
-        </button>
+        <GoogleSignIn />
 
         <p className="mt-6 text-center text-sm text-slate-500">
           New here?{" "}

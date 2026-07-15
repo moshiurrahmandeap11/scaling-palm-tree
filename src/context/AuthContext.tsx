@@ -38,10 +38,9 @@ function readPersisted(): { token: string | null; user: IUser | null } {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const initial = readPersisted();
-  const [token, setToken] = useState<string | null>(initial.token);
-  const [user, setUserState] = useState<IUser | null>(initial.user);
-  const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUserState] = useState<IUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const persist = useCallback((t: string | null, u: IUser | null) => {
     if (typeof window === "undefined") return;
@@ -55,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     (t: string, u: IUser) => {
       setToken(t);
       setUserState(u);
+      setLoading(false);
       persist(t, u);
     },
     [persist]
@@ -85,17 +85,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [token, setUser]);
 
-  // On mount, if we have a token but no user, fetch the profile.
+  // Restore local auth after hydration, then verify it with the API. The
+  // dashboard waits for this check, so private-route reloads never bounce to login.
   useEffect(() => {
-    const doRefresh = async () => {
-      if (token && !user) {
-        setLoading(true);
-        await refreshUser();
+    const restore = async () => {
+      const persisted = readPersisted();
+      if (!persisted.token) {
+        setLoading(false);
+        return;
+      }
+      setToken(persisted.token);
+      setUserState(persisted.user);
+      try {
+        const response = await api.get<{ user: IUser }>("/auth/me");
+        setUserState(response.user);
+        persist(persisted.token, response.user);
+      } catch {
+        setToken(null);
+        setUserState(null);
+        persist(null, null);
+      } finally {
         setLoading(false);
       }
     };
-    doRefresh();
-  }, [token, user, refreshUser]);
+    restore();
+  }, [persist]);
 
   return (
     <AuthContext.Provider

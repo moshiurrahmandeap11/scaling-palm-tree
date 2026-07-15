@@ -28,8 +28,8 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (form.password.length < 6) {
-      toast.error("Password must be at least 6 characters.");
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(form.password)) {
+      toast.error("Password must be at least 8 characters with uppercase, lowercase, and a number.");
       return;
     }
     setLoading(true);
@@ -83,7 +83,7 @@ export default function RegisterPage() {
             <input
               type="password"
               required
-              minLength={6}
+              minLength={8}
               className="input"
               value={form.password}
               onChange={(e) => set("password", e.target.value)}
