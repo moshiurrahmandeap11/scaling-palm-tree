@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { ICampaign } from "@/lib/types";
 import { toast } from "react-hot-toast";
 import Modal from "@/components/Modal";
+import CampaignCard from "@/components/CampaignCard";
 
 export default function CampaignDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +16,7 @@ export default function CampaignDetailPage() {
   const { user, token } = useAuth();
 
   const [campaign, setCampaign] = useState<ICampaign | null>(null);
+  const [related, setRelated] = useState<ICampaign[]>([]);
   const [loading, setLoading] = useState(true);
   const [amount, setAmount] = useState<number>(0);
   const [message, setMessage] = useState("");
@@ -33,7 +35,13 @@ export default function CampaignDetailPage() {
       .then((r) => {
         setCampaign(r.campaign);
         setAmount(r.campaign.minimumContribution);
+        return api.get<{ campaigns: ICampaign[] }>(
+          `/campaigns/explore?category=${encodeURIComponent(r.campaign.category)}&limit=4`,
+          false
+        );
       })
+      .then((response) => setRelated(response.campaigns.filter((item) => item._id !== id).slice(0, 3)))
+      .catch(() => setRelated([]))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -108,6 +116,9 @@ export default function CampaignDetailPage() {
             {campaign.category}
           </span>
           <h1 className="mt-3 text-3xl font-extrabold text-slate-800">{campaign.title}</h1>
+          <p className="mt-3 text-lg leading-7 text-slate-600">
+            {campaign.shortDescription || campaign.story.slice(0, 220)}
+          </p>
           <p className="mt-1 text-sm text-slate-500">
             by {campaign.creatorName} ·{" "}
             {new Date(campaign.deadline).toLocaleDateString()} deadline
@@ -181,6 +192,23 @@ export default function CampaignDetailPage() {
           </div>
         </aside>
       </div>
+
+      {related.length > 0 && (
+        <section className="mt-16 border-t border-slate-200 pt-10">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-bold text-slate-800">Related campaigns</h2>
+              <p className="mt-1 text-sm text-slate-500">More projects in {campaign.category}.</p>
+            </div>
+            <Link href={`/explore?category=${encodeURIComponent(campaign.category)}`} className="text-sm font-semibold text-violet-600 hover:underline">
+              View category
+            </Link>
+          </div>
+          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((item) => <CampaignCard key={item._id} campaign={item} />)}
+          </div>
+        </section>
+      )}
 
       <Modal open={reportOpen} onClose={() => setReportOpen(false)} title="Report Campaign">
         <form onSubmit={submitReport} className="space-y-3">

@@ -13,6 +13,7 @@ export default function AddCampaign() {
 
   const [form, setForm] = useState({
     title: "",
+    shortDescription: "",
     story: "",
     category: "Technology",
     fundingGoal: "",
@@ -61,6 +62,19 @@ export default function AddCampaign() {
         <div>
           <label className="label">Campaign Title</label>
           <input required className="input" value={form.title} onChange={(e) => set("title", e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Short Description</label>
+          <textarea
+            required
+            maxLength={220}
+            rows={2}
+            className="input"
+            value={form.shortDescription}
+            onChange={(e) => set("shortDescription", e.target.value)}
+            placeholder="Summarize the campaign in one or two sentences."
+          />
+          <p className="mt-1 text-right text-xs text-slate-400">{form.shortDescription.length}/220</p>
         </div>
         <div>
           <label className="label">Campaign Story</label>

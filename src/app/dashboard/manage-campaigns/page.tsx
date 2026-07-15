@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { ICampaign } from "@/lib/types";
 import { toast } from "react-hot-toast";
+import Modal from "@/components/Modal";
 
 export default function ManageCampaigns() {
   const [items, setItems] = useState<ICampaign[]>([]);
   const [loading, setLoading] = useState(true);
+  const [view, setView] = useState<ICampaign | null>(null);
 
   const load = () => {
     api
@@ -60,9 +62,10 @@ export default function ManageCampaigns() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <button onClick={() => remove(c._id)} className="btn-danger px-3 py-1.5 text-xs">
-                      Delete
-                    </button>
+                    <div className="flex gap-2">
+                      <button onClick={() => setView(c)} className="btn-ghost px-3 py-1.5 text-xs">View</button>
+                      <button onClick={() => remove(c._id)} className="btn-danger px-3 py-1.5 text-xs">Delete</button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -70,6 +73,28 @@ export default function ManageCampaigns() {
           </table>
         </div>
       )}
+
+      <Modal open={!!view} onClose={() => setView(null)} title="Campaign Overview">
+        {view && (
+          <div className="space-y-4 text-sm">
+            {view.imageURL && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={view.imageURL} alt={view.title} className="h-44 w-full rounded-xl object-cover" />
+            )}
+            <div>
+              <h3 className="text-lg font-bold text-slate-800">{view.title}</h3>
+              <p className="mt-1 text-slate-600">{view.shortDescription || view.story.slice(0, 220)}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 rounded-xl bg-slate-50 p-4 text-slate-600">
+              <p><strong>Creator:</strong> {view.creatorName}</p>
+              <p><strong>Status:</strong> {view.status}</p>
+              <p><strong>Raised:</strong> {view.amountRaised}</p>
+              <p><strong>Goal:</strong> {view.fundingGoal}</p>
+            </div>
+            <p className="whitespace-pre-line leading-6 text-slate-600">{view.story}</p>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

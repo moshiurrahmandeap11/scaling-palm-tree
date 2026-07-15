@@ -25,6 +25,7 @@ export type CampaignCategory =
 export interface ICampaign {
   _id: string;
   title: string;
+  shortDescription: string;
   story: string;
   category: CampaignCategory;
   fundingGoal: number;

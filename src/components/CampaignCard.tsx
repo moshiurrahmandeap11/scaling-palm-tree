@@ -29,10 +29,7 @@ export default function CampaignCard({ campaign }: { campaign: ICampaign }) {
   );
 
   return (
-    <Link
-      href={`/campaign/${campaign._id}`}
-      className="card-surface group flex flex-col overflow-hidden transition hover:-translate-y-1 hover:shadow-lg"
-    >
+    <article className="card-surface group flex h-full flex-col overflow-hidden transition hover:-translate-y-1 hover:shadow-lg">
       <div className="relative h-44 overflow-hidden bg-slate-100">
         {campaign.imageURL ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -52,6 +49,9 @@ export default function CampaignCard({ campaign }: { campaign: ICampaign }) {
       <div className="flex flex-1 flex-col p-4">
         <h3 className="line-clamp-2 font-semibold text-slate-800">{campaign.title}</h3>
         <p className="mt-1 text-xs text-slate-500">by {campaign.creatorName}</p>
+        <p className="mt-3 line-clamp-3 min-h-15 text-sm leading-5 text-slate-600">
+          {campaign.shortDescription || campaign.story}
+        </p>
 
         <div className="mt-3">
           <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
@@ -72,7 +72,10 @@ export default function CampaignCard({ campaign }: { campaign: ICampaign }) {
           </span>
           <span className="text-slate-500">{timeLeft(campaign.deadline, now)}</span>
         </div>
+        <Link href={`/campaign/${campaign._id}`} className="btn-primary mt-4 w-full">
+          View Details
+        </Link>
       </div>
-    </Link>
+    </article>
   );
 }

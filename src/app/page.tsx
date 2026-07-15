@@ -9,6 +9,7 @@ import "swiper/css/pagination";
 import { api } from "@/lib/api";
 import { ICampaign } from "@/lib/types";
 import CampaignCard from "@/components/CampaignCard";
+import CampaignCardSkeleton from "@/components/CampaignCardSkeleton";
 import { SITE_NAME } from "@/lib/constants";
 
 const slides = [
@@ -64,12 +65,26 @@ const steps = [
 
 export default function HomePage() {
   const [top, setTop] = useState<ICampaign[]>([]);
+  const [loadingTop, setLoadingTop] = useState(true);
+  const [stats, setStats] = useState({
+    supporters: 0,
+    creators: 0,
+    approvedCampaigns: 0,
+    creditsPledged: 0,
+    fundedCampaigns: 0,
+  });
 
   useEffect(() => {
     api
       .get<{ campaigns: ICampaign[] }>("/campaigns/top-funded", false)
       .then((r) => setTop(r.campaigns))
-      .catch(() => setTop([]));
+      .catch(() => setTop([]))
+      .finally(() => setLoadingTop(false));
+    api
+      .get<{ stats: typeof stats }>("/campaigns/platform/stats", false)
+      .then((response) => setStats(response.stats))
+      .catch(() => undefined);
+    // Stats are intentionally loaded from MongoDB instead of using promotional placeholders.
   }, []);
 
   return (
@@ -125,10 +140,14 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {top.length === 0 ? (
+        {loadingTop ? (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }, (_, index) => <CampaignCardSkeleton key={index} />)}
+          </div>
+        ) : top.length === 0 ? (
           <p className="text-slate-400">No campaigns available yet. Be the first to launch one!</p>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {top.map((c) => (
               <CampaignCard key={c._id} campaign={c} />
             ))}
@@ -161,10 +180,15 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-16">
         <div className="grid grid-cols-2 gap-6 rounded-3xl bg-gradient-to-r from-violet-600 to-indigo-600 p-10 text-white md:grid-cols-4">
           {[
-            { v: "12k+", l: "Backers" },
-            { v: "3.5M", l: "Credits pledged" },
-            { v: "850+", l: "Campaigns" },
-            { v: "92%", l: "Success rate" },
+            { v: stats.supporters.toLocaleString(), l: "Supporters" },
+            { v: stats.creditsPledged.toLocaleString(), l: "Credits raised" },
+            { v: stats.approvedCampaigns.toLocaleString(), l: "Live campaigns" },
+            {
+              v: stats.approvedCampaigns
+                ? `${Math.round((stats.fundedCampaigns / stats.approvedCampaigns) * 100)}%`
+                : "0%",
+              l: "Goals reached",
+            },
           ].map((s) => (
             <div key={s.l} className="text-center">
               <p className="text-3xl font-extrabold">{s.v}</p>

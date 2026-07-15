@@ -11,7 +11,8 @@ export default function MyCampaigns() {
   const [items, setItems] = useState<ICampaign[]>([]);
   const [loading, setLoading] = useState(true);
   const [edit, setEdit] = useState<ICampaign | null>(null);
-  const [editForm, setEditForm] = useState({ title: "", story: "", rewardInfo: "" });
+  const [view, setView] = useState<ICampaign | null>(null);
+  const [editForm, setEditForm] = useState({ title: "", shortDescription: "", story: "", rewardInfo: "" });
 
   const load = () => {
     api
@@ -24,7 +25,12 @@ export default function MyCampaigns() {
 
   const openEdit = (c: ICampaign) => {
     setEdit(c);
-    setEditForm({ title: c.title, story: c.story, rewardInfo: c.rewardInfo });
+    setEditForm({
+      title: c.title,
+      shortDescription: c.shortDescription || c.story.slice(0, 220),
+      story: c.story,
+      rewardInfo: c.rewardInfo,
+    });
   };
 
   const saveEdit = async (e: React.FormEvent) => {
@@ -94,6 +100,7 @@ export default function MyCampaigns() {
                   <td className="px-4 py-3 text-slate-500">{new Date(c.deadline).toLocaleDateString()}</td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
+                      <button onClick={() => setView(c)} className="btn-ghost px-3 py-1.5 text-xs">View</button>
                       <button onClick={() => openEdit(c)} className="btn-ghost px-3 py-1.5 text-xs">Update</button>
                       <button onClick={() => remove(c._id)} className="btn-danger px-3 py-1.5 text-xs">Delete</button>
                     </div>
@@ -116,11 +123,44 @@ export default function MyCampaigns() {
             <textarea rows={4} className="input" value={editForm.story} onChange={(e) => setEditForm((f) => ({ ...f, story: e.target.value }))} />
           </div>
           <div>
+            <label className="label">Short Description</label>
+            <textarea
+              required
+              maxLength={220}
+              rows={2}
+              className="input"
+              value={editForm.shortDescription}
+              onChange={(e) => setEditForm((f) => ({ ...f, shortDescription: e.target.value }))}
+            />
+          </div>
+          <div>
             <label className="label">Reward Info</label>
             <textarea rows={3} className="input" value={editForm.rewardInfo} onChange={(e) => setEditForm((f) => ({ ...f, rewardInfo: e.target.value }))} />
           </div>
           <button type="submit" className="btn-primary w-full">Save Changes</button>
         </form>
+      </Modal>
+
+      <Modal open={!!view} onClose={() => setView(null)} title="Campaign Overview">
+        {view && (
+          <div className="space-y-4 text-sm">
+            {view.imageURL && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={view.imageURL} alt={view.title} className="h-44 w-full rounded-xl object-cover" />
+            )}
+            <div>
+              <h3 className="text-lg font-bold text-slate-800">{view.title}</h3>
+              <p className="mt-1 text-slate-600">{view.shortDescription || view.story.slice(0, 220)}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 rounded-xl bg-slate-50 p-4 text-slate-600">
+              <p><strong>Status:</strong> {view.status}</p>
+              <p><strong>Category:</strong> {view.category}</p>
+              <p><strong>Raised:</strong> {view.amountRaised}</p>
+              <p><strong>Goal:</strong> {view.fundingGoal}</p>
+            </div>
+            <p className="whitespace-pre-line leading-6 text-slate-600">{view.story}</p>
+          </div>
+        )}
       </Modal>
     </div>
   );
