@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { DASHBOARD_NAV, SITE_NAME, DEV_REPO_URL } from "@/lib/constants";
-import NotificationBell from "./NotificationBell";
 import type { ReactElement } from "react";
 
 const ICONS: Record<string, ReactElement> = {
@@ -52,8 +51,8 @@ export default function DashboardSidebar({ onNavigate }: { onNavigate?: () => vo
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-slate-800">{user.name}</p>
           <p className="text-xs capitalize text-slate-500">{user.role}</p>
+          <p className="text-xs font-semibold text-violet-600">{user.credits} credits</p>
         </div>
-        <NotificationBell />
       </div>
 
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4 scroll-thin">

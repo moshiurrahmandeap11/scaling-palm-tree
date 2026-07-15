@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { DEV_REPO_URL, SITE_NAME } from "@/lib/constants";
+import NotificationBell from "./NotificationBell";
 
 export default function Navbar() {
   const { user, token, logout } = useAuth();
@@ -51,9 +52,13 @@ export default function Navbar() {
             </>
           ) : (
             <div className="flex items-center gap-3">
+              <NotificationBell />
               <Link href="/dashboard" className="btn-ghost hidden sm:inline-flex">
                 Dashboard
               </Link>
+              <span className="hidden rounded-lg bg-violet-50 px-2.5 py-1.5 text-xs font-bold text-violet-700 sm:inline-flex">
+                {user?.credits ?? 0} credits
+              </span>
               <div className="hidden items-center gap-2 sm:flex">
                 <img
                   src={user?.photoURL || "https://i.ibb.co/0Q8c0cX/default.png"}
@@ -62,10 +67,12 @@ export default function Navbar() {
                 />
                 <div className="leading-tight">
                   <p className="text-sm font-semibold text-slate-800">{user?.name}</p>
-                  <p className="text-xs capitalize text-slate-500">{user?.role}</p>
+                  <p className="text-xs capitalize text-slate-500">
+                    {user?.role} · {user?.credits ?? 0} credits
+                  </p>
                 </div>
               </div>
-              <button onClick={handleLogout} className="btn-danger">
+              <button onClick={handleLogout} className="btn-danger px-3 sm:px-5">
                 Logout
               </button>
             </div>

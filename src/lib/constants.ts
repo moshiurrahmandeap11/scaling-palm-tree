@@ -1,7 +1,8 @@
 import { CampaignCategory, UserRole } from "./types";
 
 export const DEV_REPO_URL =
-  process.env.NEXT_PUBLIC_DEV_REPO_URL || "https://github.com/your-username/crowdfunding-client";
+  process.env.NEXT_PUBLIC_DEV_REPO_URL ||
+  "https://github.com/moshiurrahmandeap11/scaling-palm-tree";
 
 export const SITE_NAME = "FundHorizon";
 
