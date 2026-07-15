@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { IUser } from "@/lib/types";
 import { toast } from "react-hot-toast";
+import DashboardStatsChart from "@/components/DashboardStatsChart";
 
 interface Stats {
   totalSupporters: number;
@@ -47,6 +48,8 @@ export default function AdminHome() {
           </div>
         ))}
       </div>
+
+      <DashboardStatsChart title="Platform Overview" data={cards.map((card) => ({ label: card.label, value: card.value }))} />
 
       <h2 className="mt-10 text-xl font-bold text-slate-800">Recent Users</h2>
       {users.length === 0 ? (

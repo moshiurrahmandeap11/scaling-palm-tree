@@ -5,6 +5,7 @@ import Link from "next/link";
 import { api } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-hot-toast";
+import DashboardStatsChart from "@/components/DashboardStatsChart";
 
 interface Stats {
   total: number;
@@ -42,6 +43,8 @@ export default function SupporterHome() {
           </div>
         ))}
       </div>
+
+      <DashboardStatsChart title="Contribution Activity" data={cards.map((card) => ({ label: card.label, value: card.value }))} />
 
       <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Link href="/dashboard/approved-contributions" className="card-surface p-6 transition hover:shadow-md">

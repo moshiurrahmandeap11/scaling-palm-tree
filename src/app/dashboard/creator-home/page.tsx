@@ -5,6 +5,7 @@ import { api } from "@/lib/api";
 import { IContribution } from "@/lib/types";
 import { toast } from "react-hot-toast";
 import Modal from "@/components/Modal";
+import DashboardStatsChart from "@/components/DashboardStatsChart";
 
 interface Stats {
   total: number;
@@ -61,6 +62,8 @@ export default function CreatorHome() {
           </div>
         ))}
       </div>
+
+      <DashboardStatsChart title="Campaign Performance" data={cards.map((card) => ({ label: card.label, value: card.value }))} />
 
       <h2 className="mt-10 text-xl font-bold text-slate-800">Contributions To Review</h2>
       {pending.length === 0 ? (
