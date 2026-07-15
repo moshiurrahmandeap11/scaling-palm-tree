@@ -43,6 +43,7 @@ export default function DashboardSidebar({ onNavigate }: { onNavigate?: () => vo
       </div>
 
       <div className="flex items-center gap-3 border-y border-slate-100 px-5 py-4">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={user.photoURL || "https://i.ibb.co/0Q8c0cX/default.png"}
           alt={user.name}
